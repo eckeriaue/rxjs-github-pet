@@ -14,7 +14,7 @@ import {
 
 
 interface iGithubResponce {name: string}
-class App {
+new class App {
   private app = document.querySelector('#app')
   private field?: HTMLInputElement
   private list?: HTMLUListElement
@@ -54,7 +54,6 @@ class App {
   }
 
   private recordRepsToList(reps: iGithubResponce[]) {
-    console.log(reps)
     if (!this.list) return
     for (let i = 0; i < reps.length; i++) {
       if (!this.list.children[i]) {
@@ -73,7 +72,5 @@ class App {
     }
   }
 }
-
-new App
 
 
