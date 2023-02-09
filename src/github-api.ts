@@ -2,9 +2,8 @@ export class GithubAPI {
   constructor() {
   }
 
-  public findUser(username: string) {
+  public findUsers(username: string) {
     const url = `https://api.github.com/users/${ username }/repos`
-
     return fetch(url)
       .then(res => {
         if (res.ok) {

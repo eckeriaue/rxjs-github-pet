@@ -12,19 +12,25 @@ import {
   type Observable
 } from "rxjs"
 
+
+interface iGithubResponce {name: string}
 class App {
   private app = document.querySelector('#app')
   private field?: HTMLInputElement
   private list?: HTMLUListElement
-  private keyup$?: Observable<object[]>
+  private keyup$?: Observable<iGithubResponce[]>
 
   private API = new GithubAPI
   constructor() {
+    this.main()
+  }
+  
+  private main() {
     if (!this.app) return
     this.field = this.app.appendChild(document.createElement('input'))
     this.list = this.app.appendChild(document.createElement('ul'))
-
     this.keyupListenerInit()
+
   }
 
   private keyupListenerInit() {
@@ -35,19 +41,20 @@ class App {
         map((event: Event) => (event.target as HTMLInputElement).value),
         filter((value: string) => value.length > 2),
         distinctUntilChanged(),
-        mergeMap((value: string) => from(this.API.findUser(value))
+        mergeMap((value: string) => from(this.API.findUsers(value))
           .pipe(
             catchError(() => of([]))
           )
         ),
       )
     this.keyup$.subscribe({
-      next: (reps: object[]) => this.recordRepsToList(reps),
+      next: (reps: iGithubResponce[]) => this.recordRepsToList(reps),
       error: () => console.log('api error')
     })
   }
 
-  private recordRepsToList(reps: any) {
+  private recordRepsToList(reps: iGithubResponce[]) {
+    console.log(reps)
     if (!this.list) return
     for (let i = 0; i < reps.length; i++) {
       if (!this.list.children[i]) {
